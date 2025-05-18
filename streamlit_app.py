@@ -10,22 +10,18 @@ def load_model():
     model_file = 'svm_model.pkl'
     scaler_file = 'scaler.pkl'
     
-    # Check for model file
     if not os.path.exists(model_file):
-        st.error(f"Model file '{model_file}' not found. Please ensure it is in the same directory.")
+        st.error(f"Model file '{model_file}' not found.")
         return None, None
     
-    # Check for scaler file
     if not os.path.exists(scaler_file):
-        st.error(f"Scaler file '{scaler_file}' not found. Please ensure it is in the same directory.")
+        st.error(f"Scaler file '{scaler_file}' not found.")
         return None, None
     
     try:
-        # Load model
         with open(model_file, 'rb') as mf:
             model = pickle.load(mf)
         
-        # Load scaler
         with open(scaler_file, 'rb') as sf:
             scaler = pickle.load(sf)
         
@@ -40,7 +36,6 @@ model, scaler = load_model()
 
 # If model and scaler are loaded successfully
 if model and scaler:
-    # Streamlit app title
     st.title("Breast Cancer Prediction App")
 
     # Input fields for user data
