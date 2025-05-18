@@ -9,10 +9,9 @@ import os
 
 @st.cache_resource
 def load_model():
-    # Determine paths relative to this script
-    base_dir = os.path.dirname(__file__)
-    scaler_path = os.path.join(base_dir, 'models', 'scaler.pkl')
-    model_path = os.path.join(base_dir, 'models', 'svm_model.pkl')
+    # Load model and scaler from the models directory relative to the working directory
+    scaler_path = os.path.join(os.getcwd(), 'models', 'scaler.pkl')
+    model_path  = os.path.join(os.getcwd(), 'models', 'svm_model.pkl')
     try:
         with open(scaler_path, 'rb') as f:
             scaler = pickle.load(f)
