@@ -9,13 +9,10 @@ import os
 
 @st.cache_resource
 def load_model():
-    # Load model and scaler from the models directory relative to the working directory
-    scaler_path = os.path.join(os.getcwd(), 'models', 'scaler.pkl')
-    model_path  = os.path.join(os.getcwd(), 'models', 'svm_model.pkl')
     try:
-        with open(scaler_path, 'rb') as f:
+        with open('models/scaler.pkl', 'rb') as f:
             scaler = pickle.load(f)
-        with open(model_path, 'rb') as f:
+        with open('models/svm_model.pkl', 'rb') as f:
             model = pickle.load(f)
     except FileNotFoundError as e:
         st.error(f"Model file not found: {e.filename}")
@@ -99,4 +96,3 @@ st.write(f"Healthy: {prediction_proba[0][0]:.2f}, Cancer: {prediction_proba[0][1
 
 st.subheader('Input parameters')
 st.write(input_df)
-
