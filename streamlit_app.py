@@ -7,9 +7,9 @@ import pickle
 # 1. Load trained SVC model and scaler
 @st.cache_resource
 def load_model():
-    with open('scaler.pkl', 'rb') as f:
+    with open('models/scaler.pkl', 'rb') as f:
         scaler = pickle.load(f)
-    with open('svm_model.pkl', 'rb') as f:
+    with open('models/svm_model.pkl', 'rb') as f:
         model = pickle.load(f)
     return scaler, model
 
