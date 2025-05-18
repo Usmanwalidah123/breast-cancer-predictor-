@@ -5,12 +5,22 @@ import numpy as np
 import pickle
 
 # 1. Load trained SVC model and scaler
+import os
+
 @st.cache_resource
 def load_model():
-    with open('models/scaler.pkl', 'rb') as f:
-        scaler = pickle.load(f)
-    with open('models/svm_model.pkl', 'rb') as f:
-        model = pickle.load(f)
+    # Determine paths relative to this script
+    base_dir = os.path.dirname(__file__)
+    scaler_path = os.path.join(base_dir, 'models', 'scaler.pkl')
+    model_path = os.path.join(base_dir, 'models', 'svm_model.pkl')
+    try:
+        with open(scaler_path, 'rb') as f:
+            scaler = pickle.load(f)
+        with open(model_path, 'rb') as f:
+            model = pickle.load(f)
+    except FileNotFoundError as e:
+        st.error(f"Model file not found: {e.filename}")
+        st.stop()
     return scaler, model
 
 scaler, model = load_model()
@@ -90,3 +100,4 @@ st.write(f"Healthy: {prediction_proba[0][0]:.2f}, Cancer: {prediction_proba[0][1
 
 st.subheader('Input parameters')
 st.write(input_df)
+
