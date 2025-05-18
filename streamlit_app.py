@@ -1,19 +1,38 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import os
 import pickle
 from sklearn.preprocessing import StandardScaler
 
 # Function to load model and scaler
 def load_model():
+    model_file = 'svm_model.pkl'
+    scaler_file = 'scaler.pkl'
+    
+    # Check for model file
+    if not os.path.exists(model_file):
+        st.error(f"Model file '{model_file}' not found. Please ensure it is in the same directory.")
+        return None, None
+    
+    # Check for scaler file
+    if not os.path.exists(scaler_file):
+        st.error(f"Scaler file '{scaler_file}' not found. Please ensure it is in the same directory.")
+        return None, None
+    
     try:
-        with open('svm_model.pkl', 'rb') as model_file:
-            model = pickle.load(model_file)
-        with open('scaler.pkl', 'rb') as scaler_file:
-            scaler = pickle.load(scaler_file)
+        # Load model
+        with open(model_file, 'rb') as mf:
+            model = pickle.load(mf)
+        
+        # Load scaler
+        with open(scaler_file, 'rb') as sf:
+            scaler = pickle.load(sf)
+        
         return model, scaler
-    except FileNotFoundError:
-        st.error("Model files not found. Please ensure 'svm_model.pkl' and 'scaler.pkl' are in the same directory.")
+
+    except Exception as e:
+        st.error(f"Error loading model or scaler: {e}")
         return None, None
 
 # Load the trained model and scaler
