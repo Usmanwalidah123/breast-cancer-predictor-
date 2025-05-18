@@ -11,13 +11,19 @@ def load_model():
     base_dir = os.path.dirname(os.path.abspath(__file__))
     models_dir = os.path.join(base_dir, 'models')
     
+    scaler_path = os.path.join(models_dir, 'scaler.pkl')
+    model_path = os.path.join(models_dir, 'svm_model.pkl')
+    
     try:
-        with open(os.path.join(models_dir, 'scaler.pkl'), 'rb') as f:
+        with open(scaler_path, 'rb') as f:
             scaler = pickle.load(f)
-        with open(os.path.join(models_dir, 'svm_model.pkl'), 'rb') as f:
+        with open(model_path, 'rb') as f:
             model = pickle.load(f)
     except FileNotFoundError as e:
         st.error(f"Model file not found: {e.filename}")
+        st.stop()
+    except Exception as e:
+        st.error(f"An error occurred: {str(e)}")
         st.stop()
     return scaler, model
 
