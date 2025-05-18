@@ -1,3 +1,4 @@
-!/models/scaler.pkl
-!/models/svm_model.pkl
+# Ignore all pickle files
+*.pkl
+
 
