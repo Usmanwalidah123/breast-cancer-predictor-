@@ -1,4 +1,7 @@
-# Ignore all pickle files
+# First, ignore all .pkl
 *.pkl
 
+# But do *not* ignore our trained models
+!/models/scaler.pkl
+!/models/svm_model.pkl
 
