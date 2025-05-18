@@ -9,11 +9,13 @@ import os
 def load_model():
     # Get the absolute path to the directory where the script is located
     base_dir = os.path.dirname(os.path.abspath(__file__))
-    models_dir = os.path.join(base_dir, 'models')
+    models_dir = os.path.join(base_dir, 'models')  # Ensure this is a directory
     
+    # Construct the full paths to the model files
     scaler_path = os.path.join(models_dir, 'scaler.pkl')
     model_path = os.path.join(models_dir, 'svm_model.pkl')
     
+    # Load the scaler and model
     with open(scaler_path, 'rb') as f:
         scaler = pickle.load(f)
     with open(model_path, 'rb') as f:
