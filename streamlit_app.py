@@ -1,18 +1,20 @@
-# streamlit_app.py
 import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
-
-# 1. Load trained SVC model and scaler
 import os
 
+# Function to load trained SVC model and scaler
 @st.cache_resource
 def load_model():
+    # Get the absolute path to the directory where the script is located
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    models_dir = os.path.join(base_dir, 'models')
+    
     try:
-        with open('models/scaler.pkl', 'rb') as f:
+        with open(os.path.join(models_dir, 'scaler.pkl'), 'rb') as f:
             scaler = pickle.load(f)
-        with open('models/svm_model.pkl', 'rb') as f:
+        with open(os.path.join(models_dir, 'svm_model.pkl'), 'rb') as f:
             model = pickle.load(f)
     except FileNotFoundError as e:
         st.error(f"Model file not found: {e.filename}")
@@ -21,7 +23,7 @@ def load_model():
 
 scaler, model = load_model()
 
-# 2. Map age to Age_str category (as used during training)
+# Function to map age to Age_str category (as used during training)
 def map_age_str(age):
     if 20 <= age <= 25: return '20-25'
     if 26 <= age <= 30: return '26-30'
@@ -36,7 +38,7 @@ def map_age_str(age):
     if 71 <= age <= 75: return '71-75'
     return '20-25'
 
-# 3. Streamlit UI
+# Streamlit UI
 st.title("Breast Cancer Prediction App")
 st.write("Enter patient data to predict presence of breast cancer using a trained SVM model.")
 
@@ -68,7 +70,7 @@ def user_input_features():
 
 input_df = user_input_features()
 
-# 4. Encode Age_str and BMI to numeric labels (as during training)
+# Encode Age_str and BMI to numeric labels (as during training)
 label_map = {
     'Healthy': 0,
     'Patient': 1
@@ -79,15 +81,15 @@ input_df['BMI'] = input_df['BMI'].apply(lambda x: 0 if x <= 25 else 1)
 age_labels = ['20-25','26-30','31-35','36-40','41-45','46-50','51-55','56-60','61-65','66-70','71-75']
 input_df['Age_str'] = input_df['Age_str'].apply(lambda x: age_labels.index(x))
 
-# 5. Scale features
+# Scale features
 features_order = ['Glucose','Insulin','HOMA','Leptin','Adiponectin','Resistin','MCP.1','BMI','Age_str']
 input_scaled = scaler.transform(input_df[features_order])
 
-# 6. Predict
+# Predict
 prediction = model.predict(input_scaled)
 prediction_proba = model.predict_proba(input_scaled)
 
-# 7. Display
+# Display
 st.subheader('Prediction')
 st.write('Breast Cancer' if prediction[0]==1 else 'Healthy')
 
